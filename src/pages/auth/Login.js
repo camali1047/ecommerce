@@ -17,7 +17,7 @@ const Login = ({ history }) => {
     if (user && user.token) {
       history.push("/");
     }
-  }, [user]);
+  }, [user, history]);
 
   let dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ const Login = ({ history }) => {
     //console.table(email, password);
     try {
       const result = await auth.signInWithEmailAndPassword(email, password);
-      //console.log(result);
+      //console.log("result", result);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
