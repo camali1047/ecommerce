@@ -19,6 +19,7 @@ import CategoryCreate from "./pages/admin/category/CategoryCreate";
 import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
 import SubCreate from "./pages/admin/sub/SubCreate";
 import SubUpdate from "./pages/admin/sub/SubUpdate";
+import ProductCreate from "./pages/admin/product/ProductCreate";
 
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
@@ -33,7 +34,7 @@ const App = () => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
-        console.log("user", user);
+        //console.log("user", user);
         currentUser(idTokenResult.token)
           .then((res) => {
             dispatch({
@@ -75,6 +76,7 @@ const App = () => {
         />
         <AdminRoute exact path="/admin/sub/:slug" component={SubUpdate} />
         <AdminRoute exact path="/admin/sub" component={SubCreate} />
+        <AdminRoute exact path="/admin/product" component={ProductCreate} />
         <Route path="/" component={Home} />
       </Switch>
     </>
