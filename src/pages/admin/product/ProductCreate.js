@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 import { getCategories, getCategorySubs } from "../../../functions/category";
+import FileUpload from "../../../components/forms/FileUpload";
+
 const initialState = {
   title: "",
   description: "",
@@ -25,6 +27,7 @@ const ProductCreate = () => {
   const [values, setValues] = useState(initialState);
   const [subOptions, setSubOptions] = useState([]);
   const [showSub, setShowSub] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   //redux
   const { user } = useSelector((state) => ({ ...state }));
@@ -58,11 +61,12 @@ const ProductCreate = () => {
   const handleCategoryChange = (e) => {
     e.preventDefault();
     console.log("CLICKED CATEGORY", e.target.value);
-    setValues({ ...values, category: e.target.value });
+    setValues({ ...values, subs: [], category: e.target.value });
     getCategorySubs(e.target.value).then((res) => {
       console.log("SUB OPTIONS ON CAREGORY CLICK", res);
       setSubOptions(res.data);
     });
+    setShowSub(true);
   };
 
   return (
@@ -74,10 +78,20 @@ const ProductCreate = () => {
         <div className="col-md-10">
           <h4>Product Create</h4>
           <hr />
+          {JSON.stringify(values.images)}
+
+          <div className="p-3">
+            <FileUpload
+              values={values}
+              setValues={setValues}
+              setLoading={setLoading}
+            />
+          </div>
 
           <ProductCreateForm
             handleSubmit={handleSubmit}
             handleChange={handleChange}
+            setValues={setValues}
             values={values}
             handleCategoryChange={handleCategoryChange}
             subOptions={subOptions}
