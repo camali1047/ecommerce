@@ -13,7 +13,6 @@ const initialState = {
   title: "",
   description: "",
   price: "",
-  categories: [],
   category: "",
   subs: [],
   shipping: "",
@@ -28,6 +27,9 @@ const initialState = {
 const ProductUpdate = ({ match }) => {
   //state
   const [values, setValues] = useState(initialState);
+  const [subOptions, setSubOptions] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [arrayOfSubs, setArrayOfSubs] = useState([]);
 
   //redux
   const { user } = useSelector((state) => ({ ...state }));
@@ -38,13 +40,27 @@ const ProductUpdate = ({ match }) => {
 
   useEffect(() => {
     loadProduct();
+    loadCategories();
   }, []);
   const loadProduct = () => {
     getProduct(slug).then((p) => {
       //console.log("single product:", p);
+      // 1 load single product
       setValues({ ...values, ...p.data });
+      //2 load single product category subs
+      getCategorySubs(p.data.category?._id).then((res) => {
+        setSubOptions(res.data); //on first load show default subs
+      });
+      // 3 prepare array of sub ids to show as default sub values in Antd Select
+      let arr = [];
+      p.data.subs.map((s) => {
+        arr.push(s._id);
+      });
+      setArrayOfSubs((prev) => arr); //required for antd select to work
     });
   };
+  const loadCategories = () =>
+    getCategories().then((c) => setCategories(c.data));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,6 +69,15 @@ const ProductUpdate = ({ match }) => {
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
+  };
+  const handleCategoryChange = (e) => {
+    e.preventDefault();
+    console.log("CLICKED CATEGORY", e.target.value);
+    setValues({ ...values, subs: [], category: e.target.value });
+    getCategorySubs(e.target.value).then((res) => {
+      console.log("SUB OPTIONS ON CAREGORY CLICK", res);
+      setSubOptions(res.data);
+    });
   };
 
   return (
@@ -69,7 +94,12 @@ const ProductUpdate = ({ match }) => {
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             setValues={setValues}
+            handleCategoryChange={handleCategoryChange}
             values={values}
+            categories={categories}
+            subOptions={subOptions}
+            arrayOfSubs={arrayOfSubs}
+            setArrayOfSubs={setArrayOfSubs}
           />
           <hr />
         </div>
