@@ -30,6 +30,7 @@ const ProductUpdate = ({ match }) => {
   const [subOptions, setSubOptions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [arrayOfSubs, setArrayOfSubs] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   //redux
   const { user } = useSelector((state) => ({ ...state }));
@@ -56,11 +57,15 @@ const ProductUpdate = ({ match }) => {
       p.data.subs.map((s) => {
         arr.push(s._id);
       });
+      console.log("ARR", arr);
       setArrayOfSubs((prev) => arr); //required for antd select to work
     });
   };
   const loadCategories = () =>
-    getCategories().then((c) => setCategories(c.data));
+    getCategories().then((c) => {
+      console.log("GET CATEGORIES IN UPDATE PRODUCT", c.data);
+      setCategories(c.data);
+    });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -73,11 +78,22 @@ const ProductUpdate = ({ match }) => {
   const handleCategoryChange = (e) => {
     e.preventDefault();
     console.log("CLICKED CATEGORY", e.target.value);
-    setValues({ ...values, subs: [], category: e.target.value });
+    setValues({ ...values, subs: [] });
+    setSelectedCategory(e.target.value);
+
     getCategorySubs(e.target.value).then((res) => {
       console.log("SUB OPTIONS ON CAREGORY CLICK", res);
       setSubOptions(res.data);
     });
+
+    // if user clicks back to the original category
+    // show its sub categories in default
+
+    if (values.category._id == e.target.value) {
+      console.log("selected target value");
+      loadProduct();
+    }
+    setArrayOfSubs([]);
   };
 
   return (
@@ -100,6 +116,7 @@ const ProductUpdate = ({ match }) => {
             subOptions={subOptions}
             arrayOfSubs={arrayOfSubs}
             setArrayOfSubs={setArrayOfSubs}
+            selectedCategory={selectedCategory}
           />
           <hr />
         </div>
