@@ -58,7 +58,7 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <React.Fragment>
       <Header />
       <ToastContainer />
       <Switch>
@@ -87,7 +87,7 @@ const App = () => {
         <AdminRoute exact path="/admin/products" component={AllProducts} />
         <Route path="/" component={Home} />
       </Switch>
-    </>
+    </React.Fragment>
   );
 };
 

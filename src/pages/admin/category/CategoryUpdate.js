@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import { updateCategory, getCategory } from "../../../functions/category";
 import CategoryForm from "../../../components/forms/CategoryForm";
 

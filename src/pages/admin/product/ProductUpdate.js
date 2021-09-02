@@ -50,13 +50,13 @@ const ProductUpdate = ({ match, history }) => {
       // 1 load single product
       setValues({ ...values, ...p.data });
       //2 load single product category subs
-      getCategorySubs(p.data.category?._id).then((res) => {
+      getCategorySubs(p.data.category._id).then((res) => {
         setSubOptions(res.data); //on first load show default subs
       });
       // 3 prepare array of sub ids to show as default sub values in Antd Select
       let arr = [];
       p.data.subs.map((s) => {
-        arr.push(s._id);
+        return arr.push(s._id);
       });
       console.log("ARR", arr);
       setArrayOfSubs((prev) => arr); //required for antd select to work
@@ -104,7 +104,7 @@ const ProductUpdate = ({ match, history }) => {
     // if user clicks back to the original category
     // show its sub categories in default
 
-    if (values.category._id == e.target.value) {
+    if (values.category._id === e.target.value) {
       console.log("selected target value");
       loadProduct();
     }

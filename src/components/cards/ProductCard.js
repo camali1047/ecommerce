@@ -15,6 +15,7 @@ const ProductCard = ({ product }) => {
           src={images && images.length ? images[0].url : laptop}
           style={{ height: "150px", objectFit: "cover" }}
           className="p-1"
+          alt="laptop"
         />
       }
       actions={[
@@ -23,10 +24,10 @@ const ProductCard = ({ product }) => {
           <br />
           View Product
         </Link>,
-        <>
+        <React.Fragment>
           <ShoppingCartOutlined className="text-danger" /> <br />
           Add to Cart
-        </>,
+        </React.Fragment>,
       ]}
     >
       <Meta

@@ -83,7 +83,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
   };
 
   return (
-    <>
+    <React.Fragment>
       <div className="row">
         {values.images &&
           values.images.map((image) => (
@@ -114,7 +114,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
           />
         </label>
       </div>
-    </>
+    </React.Fragment>
   );
 };
 
