@@ -8,7 +8,7 @@ const Wishlist = () => {
         <div className="col-md-2">
           <UserNav />
         </div>
-        <div className="col">user Whishlist page</div>
+        <div className="col">User Whishlist Page</div>
       </div>
     </div>
   );
